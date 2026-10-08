@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Task Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">✓</div>
+            <div>
+                <h2>TaskTrack</h2>
+                <p>Student Manager</p>
+            </div>
+        </div>
+
+        <nav>
+            <button class="nav-item active" onclick="showSection('dashboard')">
+                <span>▣</span> Dashboard
+            </button>
+
+            <button class="nav-item" onclick="showSection('tasks')">
+                <span>☷</span> My Tasks
+            </button>
+
+            <button class="nav-item" onclick="showSection('addTask')">
+                <span>＋</span> Add Task
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>Student Task Management</p>
+            <small>Docker + Kubernetes Project</small>
+        </div>
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!-- Header -->
+        <header class="header">
+            <div>
+                <h1 id="pageTitle">Dashboard</h1>
+                <p>Manage and track your academic tasks efficiently.</p>
+            </div>
+
+            <button class="add-btn" onclick="showSection('addTask')">
+                + Add New Task
+            </button>
+        </header>
+
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="section active-section">
+
+            <div class="welcome-card">
+                <div>
+                    <h2>Welcome back, Student 👋</h2>
+                    <p>Stay organized and complete your academic tasks on time.</p>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">📋</div>
+                    <div>
+                        <p>Total Tasks</p>
+                        <h2 id="totalTasks">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">⏳</div>
+                    <div>
+                        <p>Pending</p>
+                        <h2 id="pendingTasks">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <div>
+                        <p>Completed</p>
+                        <h2 id="completedTasks">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon red">!</div>
+                    <div>
+                        <p>Overdue</p>
+                        <h2 id="overdueTasks">0</h2>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Recent Tasks -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Recent Tasks</h2>
+                    <button onclick="showSection('tasks')" class="view-btn">
+                        View All
+                    </button>
+                </div>
+
+                <div id="recentTasks"></div>
+            </div>
+
+        </section>
+
+
+        <!-- Tasks Section -->
+        <section id="tasks" class="section">
+
+            <div class="content-card">
+
+                <div class="card-header">
+                    <div>
+                        <h2>My Tasks</h2>
+                        <p>View and manage all your academic tasks.</p>
+                    </div>
+
+                    <button class="add-btn" onclick="showSection('addTask')">
+                        + Add Task
+                    </button>
+                </div>
+
+                <div class="filters">
+
+                    <input
+                        type="text"
+                        id="searchTask"
+                        placeholder="Search tasks..."
+                        oninput="displayTasks()"
+                    >
+
+                    <select id="filterStatus" onchange="displayTasks()">
+                        <option value="all">All Tasks</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+
+                    <select id="filterPriority" onchange="displayTasks()">
+                        <option value="all">All Priorities</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+
+                </div>
+
+                <div id="taskList"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Add Task Section -->
+        <section id="addTask" class="section">
+
+            <div class="content-card form-card">
+
+                <div class="card-header">
+                    <div>
+                        <h2 id="formTitle">Add New Task</h2>
+                        <p>Create a new academic task.</p>
+                    </div>
+                </div>
+
+                <form id="taskForm">
+
+                    <input type="hidden" id="editTaskId">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Task Title</label>
+                            <input
+                                type="text"
+                                id="taskTitle"
+                                placeholder="Enter task title"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input
+                                type="text"
+                                id="taskSubject"
+                                placeholder="Example: Cloud Computing"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group full">
+                            <label>Description</label>
+                            <textarea
+                                id="taskDescription"
+                                placeholder="Enter task description"
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input
+                                type="date"
+                                id="taskDate"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="taskPriority">
+                                <option value="High">High</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-buttons">
+
+                        <button
+                            type="button"
+                            class="cancel-btn"
+                            onclick="resetForm(); showSection('dashboard')"
+                        >
+                            Cancel
+                        </button>
+
+                        <button type="submit" class="save-btn">
+                            Save Task
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
